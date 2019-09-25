@@ -88,8 +88,51 @@
     "daheige"
     127.0.0.1:6382>
 
-# 参考文档
+# 采用脚步搭建集群
 
+    cd /data/web/redis-4.0.2/utils/create-cluster
+    sudo vim utils/create-cluster
+
+    修改PORT=6379
+    添加REDIS_ROOT,并切换到$REDIS_ROOT/utils/create-cluster
+    修改内容如下：
+
+    #!/bin/bash
+
+    # Settings
+    PORT=6390
+    TIMEOUT=2000
+    NODES=6
+    REPLICAS=1
+    REDIS_ROOT=/data/web/redis-4.0.2
+
+    # You may want to put the above config parameters into config.sh in order to
+    # override the defaults without modifying this script.
+
+    if [ -a config.sh ]
+    then
+        source "config.sh"
+    fi
+
+    # Computed vars
+    ENDPORT=$((PORT+NODES))
+
+    cd $REDIS_ROOT/utils/create-cluster
+
+    启动集群
+    cd  /data/web/redis-4.0.2/utils/create-cluster
+    ./create-cluster start
+
+    停止集群
+    ./create-cluster stop
+
+    进入客户端
+    cd /data/web/redis-4.0.2/src
+
+# 参考文档
+    
+    https://github.com/go-redis/redis
+    
     https://blog.csdn.net/cnzyyh/article/details/78543324
 
-    https://my.oschina.net/lyyjason/blog/1842002?from=timeline
+    https://my.oschina.net/lyyjason/blog/1842002?from=timeline/
