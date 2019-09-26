@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -8,11 +9,20 @@ import (
 )
 
 func main() {
-	/*client := redis.NewClient(&redis.Options{
+	client := redis.NewClient(&redis.Options{
 		Addr:     "127.0.0.1:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
+
+		// Maximum number of socket connections.
+		// Default is 10 connections per every CPU as reported by runtime.NumCPU.
+		PoolSize:     10,
+		PoolTimeout:  10 * time.Second,
+		MinIdleConns: 3, //min idleConnection
+		IdleTimeout:  300 * time.Second,
 	})
+
+	defer client.Close()
 
 	pong, err := client.Ping().Result()
 	fmt.Println(pong, err)
@@ -35,7 +45,7 @@ func main() {
 		panic(err)
 	} else {
 		fmt.Println("key2", val2)
-	}*/
+	}
 
 	// https://blog.csdn.net/cnzyyh/article/details/78543324
 	// https://my.oschina.net/lyyjason/blog/1842002?from=timeline
@@ -91,12 +101,15 @@ func main() {
 }
 
 /**
-2019/09/25 22:06:28 OK <nil>
-2019/09/25 22:06:28 OK <nil>
-2019/09/25 22:06:28 daheige2 <nil>
-2019/09/25 22:06:28 21 <nil>
-2019/09/25 22:06:28 1 <nil>
-2019/09/25 22:06:28 current key not exist
+2019/09/26 21:56:36 OK <nil>
+PONG <nil>
+2019/09/26 21:56:36 OK <nil>
+key value
+2019/09/26 21:56:36 daheige2 <nil>
+key2 does not exists
+2019/09/26 21:56:36 29 <nil>
+2019/09/26 21:56:36 1 <nil>
+2019/09/26 21:56:36 current key not exist
 
 $ ./src/redis-cli -h 127.0.0.1 -p 6382
 127.0.0.1:6382> get username
